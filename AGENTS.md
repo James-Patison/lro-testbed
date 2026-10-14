@@ -11,6 +11,7 @@ Build static HTML items with JavaScript and CSS for GitHub Pages hosting.
 - Keep markup, behavior, and presentation in their respective HTML, JavaScript, and CSS files. Use clear, consistent names and formatting in the style of Microsoft web examples.
 - Keep paths relative so GitHub Pages serves the site correctly from a repository subpath.
 - Add new project conventions to this file and update `README.md` when the structure changes.
+- Browser apps with client-side data may use `.mjs` modules in their `js/` folder and must keep all paths relative.
 
 Use the approved GitHub connection for repository operations. The GitHub CLI (`gh`) is also fine when authenticated; it is not required. Ask the user for permission before using a cloud browser.
 

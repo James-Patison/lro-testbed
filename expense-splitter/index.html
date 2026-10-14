@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f7f3">
+    <meta name="description" content="Split group expenses and track what is still owed, saved on this device.">
+    <title>Common Ground — Expense splitter</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="../index.html"><span class="brand-symbol">✳</span><span>common<br>ground</span></a>
+            <div class="sidebar-section"><div class="sidebar-heading"><span>YOUR GROUPS</span><button class="icon-button" id="new-group-side" aria-label="Create group">+</button></div><nav id="group-nav" aria-label="Groups"></nav></div>
+            <div class="sidebar-bottom"><button class="side-link" id="manage-people">◎ &nbsp; People</button><button class="side-link" id="manage-categories">▦ &nbsp; Categories</button><div class="local-note"><span class="local-dot"></span> Saved on this device</div></div>
+        </aside>
+        <main class="main-area">
+            <header class="topbar"><span id="breadcrumb">Overview</span><span class="topbar-right">A clearer way to settle up <span class="topbar-star">✳</span></span></header>
+            <div id="app-content"></div>
+        </main>
+    </div>
+    <dialog id="dialog"><div id="dialog-content"></div></dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="./js/app.mjs"></script>
+</body>
+</html>
