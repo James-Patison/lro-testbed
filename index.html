@@ -1,34 +1,47 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f4f6f3"><title>Little List — To-do</title>
-<style>
-:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#24312c;background:#f4f6f3}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:1000px;margin:auto;padding:34px 22px 60px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}.brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border-radius:14px;background:#286a53;color:white;display:grid;place-items:center;font-size:21px}.brand b{display:block;font-size:18px}.brand small{color:#78837d}.primary{border:0;background:#286a53;color:white;border-radius:10px;padding:11px 16px;font-weight:650}.primary:hover{background:#1f563f}.intro h1{margin:4px 0;font-size:30px;letter-spacing:-.04em}.intro p{color:#78837d;margin:0}.eyebrow{color:#286a53;text-transform:uppercase;font-size:11px;letter-spacing:.1em;font-weight:700}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}.stat{background:white;border:1px solid #e2e8e2;border-radius:14px;padding:15px 18px}.stat span{display:block;color:#78837d;font-size:12px}.stat strong{font-size:24px}.bar{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:26px 0 16px}.ctl{height:41px;background:#fff;border:1px solid #dfe6df;border-radius:9px;padding:0 11px;color:#24312c}.search{flex:1;min-width:150px}.filters{display:flex;background:#e9eee9;padding:3px;border-radius:10px}.filters button{border:0;background:transparent;color:#69766e;padding:7px 10px;border-radius:8px}.filters button.active{background:white;color:#20573f;font-weight:650}.heading{display:flex;justify-content:space-between;align-items:center;margin:0 2px 10px}.heading h2{font-size:16px;margin:0}.heading span{font-size:13px;color:#78837d}.list{display:grid;gap:9px}.task{display:grid;grid-template-columns:22px 1fr auto;gap:12px;align-items:start;background:#fff;border:1px solid #e2e8e2;border-radius:13px;padding:15px 16px}.task:hover{border-color:#c7d6cb}.task input[type=checkbox]{accent-color:#286a53;width:19px;height:19px;margin:2px 0}.desc{font-weight:650;overflow-wrap:anywhere}.done .desc{text-decoration:line-through;color:#919b95}.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}.tag{font-size:11px;font-weight:600;background:#e8f1eb;color:#225a42;padding:3px 9px;border-radius:99px}.tag.person{background:#f0f2ef;color:#5d6962}.due{font-size:12px;color:#78837d;margin-top:8px}.due.over{color:#ad4c40;font-weight:650}.actions{display:flex;gap:4px}.icon{border:0;background:transparent;color:#78837d;border-radius:8px;width:32px;height:32px;font-size:16px}.icon:hover{background:#f0f3ef;color:#24312c}.empty{text-align:center;background:#ffffff8c;border:1px dashed #ccd6ce;padding:40px 18px;border-radius:14px;color:#78837d}.empty b{display:block;color:#24312c;font-size:17px;margin:7px}.empty p{margin:0}dialog{border:0;border-radius:17px;padding:0;width:min(500px,calc(100% - 24px));box-shadow:0 25px 80px #15251b40;color:#24312c}dialog::backdrop{background:#15251b66;backdrop-filter:blur(2px)}.form{padding:23px}.formhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.formhead h2{margin:0;font-size:21px}.close{border:0;background:none;color:#78837d;font-size:24px}.fields{display:grid;gap:13px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field>input,.field select{height:42px;border:1px solid #dfe6df;border-radius:9px;padding:0 10px;background:#fff;width:100%;color:#24312c}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.selectrow{display:flex;gap:6px}.selectrow select{min-width:0;flex:1}.add{height:42px;border:0;border-radius:9px;background:#e8f1eb;color:#225a42;padding:0 12px;font-weight:700}.formactions{display:flex;justify-content:flex-end;gap:8px;margin-top:5px}.cancel{border:0;border-radius:9px;background:#edf0ed;color:#536159;padding:10px 14px}.error{color:#ad4c40;font-size:13px;min-height:18px}@media(max-width:650px){.wrap{padding:22px 14px}.top{margin-bottom:26px}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:21px}.intro h1{font-size:27px}.task{padding:13px;gap:9px}.actions{flex-direction:column}.row{grid-template-columns:1fr}.search{min-width:100%}}
-</style></head><body><main class="wrap">
-<header class="top"><div class="brand"><div class="mark" aria-hidden="true">✓</div><div><b>Little List</b><small>A calmer way to keep track</small></div></div><button class="primary" id="new">＋ Add a task</button></header>
-<section class="intro"><div class="eyebrow">Your day, at a glance</div><h1>To-do list</h1><p>Small steps add up. Keep yours all in one place.</p></section>
-<section class="stats" aria-label="Task summary"><div class="stat"><span>Open tasks</span><strong id="openCount">0</strong></div><div class="stat"><span>Due today</span><strong id="todayCount">0</strong></div><div class="stat"><span>Completed</span><strong id="doneCount">0</strong></div></section>
-<nav class="bar" aria-label="Task filters"><input id="search" class="ctl search" type="search" placeholder="Search tasks…" aria-label="Search tasks"><select class="ctl" id="catFilter" aria-label="Filter category"></select><select class="ctl" id="personFilter" aria-label="Filter assignee"></select><div class="filters" role="group" aria-label="Task status"><button class="active" data-mode="all">All</button><button data-mode="open">To do</button><button data-mode="done">Done</button></div></nav>
-<div class="heading"><h2 id="listTitle">All tasks</h2><span id="total"></span></div><section class="list" id="list" aria-live="polite"></section></main>
-<dialog id="dialog"><form id="form" class="form"><div class="formhead"><h2 id="formTitle">Add a task</h2><button type="button" class="close" id="close" aria-label="Close">×</button></div><input type="hidden" id="id"><div class="fields"><div class="field"><label for="descInput">What needs doing?</label><input id="descInput" maxlength="180" required placeholder="e.g. Pay the electricity bill"></div><div class="row"><div class="field"><label for="category">Category</label><div class="selectrow"><select id="category"></select><button type="button" class="add" id="addCategory" aria-label="Add category">＋</button></div></div><div class="field"><label for="person">Assignee</label><div class="selectrow"><select id="person"></select><button type="button" class="add" id="addPerson" aria-label="Add person">＋</button></div></div></div><div class="field"><label for="deadline">Deadline <span style="font-weight:400;color:#78837d">(optional)</span></label><input id="deadline" type="datetime-local"></div><div class="error" id="error" role="alert"></div><div class="formactions"><button type="button" class="cancel" id="cancel">Cancel</button><button class="primary" type="submit">Save task</button></div></div></form></dialog>
-<script>
-(() => {
-  const KEY='little-list-v1', DEFAULT_CATEGORIES=['Event','Housework','Bills'];
-  const $=id=>document.getElementById(id);
-  function read(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&Array.isArray(s.tasks))return{tasks:s.tasks,categories:Array.isArray(s.categories)?s.categories:DEFAULT_CATEGORIES.slice(),people:Array.isArray(s.people)?s.people:[]}}catch(e){console.warn('Could not read saved list',e)}return{tasks:[],categories:DEFAULT_CATEGORIES.slice(),people:[]}}
-  let data=read(), mode='all';
-  function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){alert('Your browser could not save this list. Check local storage settings.')}}
-  function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
-  function day(s){const d=new Date(s);return Number.isNaN(d.getTime())?'':[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
-  function fill(el,items,label,selected=''){el.innerHTML=(label===null?'':'<option value="">'+label+'</option>')+items.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');if(items.includes(selected))el.value=selected}
-  function filters(){let c=$('catFilter').value,p=$('personFilter').value;fill($('catFilter'),data.categories,'All categories',c);fill($('personFilter'),data.people,'Everyone',p)}
-  function formOptions(c='',p=''){fill($('category'),data.categories,null,c||data.categories[0]);fill($('person'),data.people,'Unassigned',p)}
-  function render(){filters();const open=data.tasks.filter(t=>!t.done),today=day(new Date());$('openCount').textContent=open.length;$('todayCount').textContent=open.filter(t=>t.deadline&&day(t.deadline)===today).length;$('doneCount').textContent=data.tasks.filter(t=>t.done).length;const q=$('search').value.trim().toLowerCase(),c=$('catFilter').value,p=$('personFilter').value;let tasks=data.tasks.filter(t=>(mode==='all'||(mode==='open'&&!t.done)||(mode==='done'&&t.done))&&(!c||t.category===c)&&(!p||t.assignee===p)&&(!q||[t.description,t.category,t.assignee].join(' ').toLowerCase().includes(q))).sort((a,b)=>a.done!==b.done?(a.done?1:-1):!a.deadline?1:!b.deadline?-1:new Date(a.deadline)-new Date(b.deadline));$('listTitle').textContent={all:'All tasks',open:'To do',done:'Completed'}[mode];$('total').textContent=tasks.length+' task'+(tasks.length===1?'':'s');if(!tasks.length){$('list').innerHTML='<div class="empty"><span aria-hidden="true">'+(data.tasks.length?'🔎':'🌿')+'</span><b>'+(data.tasks.length?'No matching tasks':'A fresh start')+'</b><p>'+(data.tasks.length?'Try another filter or search.':'Add a task when something comes to mind.')+'</p></div>';return}$('list').innerHTML=tasks.map(t=>{let deadline='';if(t.deadline){const d=new Date(t.deadline),over=d<new Date(),same=day(d)===today,label=(same?'Today':d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'}))+' · '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});deadline='<div class="due '+(!t.done&&over?'over':'')+'">'+(!t.done&&over?'Overdue · ':'')+esc(label)+'</div>'}return'<article class="task '+(t.done?'done':'')+'" data-id="'+esc(t.id)+'"><input type="checkbox" aria-label="Mark '+esc(t.description)+' done" '+(t.done?'checked':'')+'><div><div class="desc">'+esc(t.description)+'</div><div class="meta"><span class="tag">'+esc(t.category)+'</span>'+(t.assignee?'<span class="tag person">'+esc(t.assignee)+'</span>':'')+'</div>'+deadline+'</div><div class="actions"><button class="icon edit" aria-label="Edit '+esc(t.description)+'" title="Edit">✎</button><button class="icon delete" aria-label="Delete '+esc(t.description)+'" title="Delete">×</button></div></article>'}).join('')}
-  function openForm(t){$('form').reset();$('id').value=t?.id||'';$('formTitle').textContent=t?'Edit task':'Add a task';$('descInput').value=t?.description||'';$('deadline').value=t?.deadline||'';$('error').textContent='';formOptions(t?.category,t?.assignee);$('dialog').showModal();$('descInput').focus()}
-  function close(){$('dialog').close()}
-  $('new').onclick=()=>openForm();$('close').onclick=close;$('cancel').onclick=close;$('dialog').onclick=e=>{if(e.target===$('dialog'))close()};
-  $('form').onsubmit=e=>{e.preventDefault();let description=$('descInput').value.trim(),category=$('category').value;if(!description){$('error').textContent='Add a description first.';return}if(!category){$('error').textContent='Add a category first.';return}let id=$('id').value,old=data.tasks.find(t=>t.id===id);let task={id:id||(crypto.randomUUID?crypto.randomUUID():String(Date.now())),description,category,assignee:$('person').value,deadline:$('deadline').value,done:old?.done||false,dateAdded:old?.dateAdded||new Date().toISOString()};if(old)data.tasks=data.tasks.map(t=>t.id===id?task:t);else data.tasks.push(task);save();close();render()};
-  function addTo(key,label){let value=prompt('Add a '+label+' name:');if(!value||!value.trim())return;value=value.trim().slice(0,60);if(data[key].some(x=>x.toLowerCase()===value.toLowerCase())){alert('That '+label+' already exists.');return}data[key].push(value);save();formOptions($('category').value,key==='people'?value:$('person').value);render()}
-  $('addCategory').onclick=()=>addTo('categories','category');$('addPerson').onclick=()=>addTo('people','person');
-  $('list').onclick=e=>{let card=e.target.closest('.task');if(!card)return;let t=data.tasks.find(x=>x.id===card.dataset.id);if(!t)return;if(e.target.matches('input[type=checkbox]')){t.done=e.target.checked;save();render()}else if(e.target.closest('.edit'))openForm(t);else if(e.target.closest('.delete')&&confirm('Delete this task?')){data.tasks=data.tasks.filter(x=>x.id!==t.id);save();render()}};
-  $('search').oninput=render;$('catFilter').onchange=render;$('personFilter').onchange=render;document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));render()});render();
-})();
-</script></body></html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6f3">
+    <meta name="description" content="A home for small web projects and experiments.">
+    <title>Projects | lro-testbed</title>
+    <link rel="stylesheet" href="./css/site.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <a class="site-name" href="./index.html" aria-label="lro-testbed home">
+                <span class="site-mark" aria-hidden="true">L</span>
+                <span>lro-testbed</span>
+            </a>
+            <span class="site-label">Project index</span>
+        </header>
+
+        <main>
+            <section class="intro" aria-labelledby="page-title">
+                <p class="eyebrow">Small projects, one home</p>
+                <h1 id="page-title">Explore the testbed.</h1>
+                <p>Browser projects and useful little experiments live here. Pick one to open it.</p>
+            </section>
+
+            <section class="projects" aria-labelledby="projects-title">
+                <div class="section-heading">
+                    <h2 id="projects-title">Projects</h2>
+                    <span>01 available</span>
+                </div>
+                <a class="project-card" href="./todo/">
+                    <span class="project-icon" aria-hidden="true">✓</span>
+                    <span class="project-copy">
+                        <strong>TODO</strong>
+                        <span>A simple place to track tasks, deadlines, categories, and people.</span>
+                    </span>
+                    <span class="project-arrow" aria-hidden="true">↗</span>
+                </a>
+            </section>
+        </main>
+
+        <footer>More projects can be added as their own folders.</footer>
+    </div>
+</body>
+</html>
