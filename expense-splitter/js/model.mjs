@@ -7,7 +7,7 @@ export const cents = value => {
     if (!Number.isFinite(amount) || amount <= 0 || Math.abs(Math.round(amount * 100) - amount * 100) > 1e-7) throw new Error('Enter a valid amount with at most two decimal places.');
     return Math.round(amount * 100);
 };
-export const money = value => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(value / 100);
+export const money = value => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value / 100);
 export const nameOf = (data, personId) => data.people.find(person => person.id === personId)?.name ?? 'Unknown person';
 export function splitEqual(total, memberIds) {
     if (!memberIds.length) throw new Error('Choose at least one person to split with.');
@@ -51,6 +51,13 @@ export function obligations(data, groupId) {
             const key = `${expense.id}:${share.userId}`;
             return { key, expense, debtorId: share.userId, creditorId: expense.payerId, amountCents: share.amountCents, paidCents: paid.get(key) ?? 0, remainingCents: Math.max(0, share.amountCents - (paid.get(key) ?? 0)) };
         })).sort((a, b) => a.expense.createdAt.localeCompare(b.expense.createdAt) || a.key.localeCompare(b.key));
+}
+export function outstandingByPerson(data, groupId) {
+    const totals = new Map();
+    for (const item of obligations(data, groupId)) {
+        if (item.remainingCents > 0) totals.set(item.debtorId, (totals.get(item.debtorId) ?? 0) + item.remainingCents);
+    }
+    return totals;
 }
 export function settle(data, groupId, debtorId, creditorId, amountCents, onlyKey = null) {
     if (!Number.isInteger(amountCents) || amountCents <= 0) throw new Error('Enter a payment greater than zero.');
