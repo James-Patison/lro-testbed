@@ -13,6 +13,8 @@ Build static HTML items with JavaScript and CSS for GitHub Pages hosting.
 - Add new project conventions to this file and update `README.md` when the structure changes.
 - Browser apps with client-side data may use `.mjs` modules in their `js/` folder and must keep all paths relative.
 
-Use the approved GitHub connection for repository operations. The GitHub CLI (`gh`) is also fine when authenticated; it is not required. Ask the user for permission before using a cloud browser.
+Use the approved GitHub connection for repository operations. The GitHub CLI (`gh`) is also fine when authenticated; it is not required.
+
+For work on this repository, you may use the cloud browser for testing and push completed changes to the repository without asking for separate confirmation. Platform-enforced tool permissions and approvals still apply.
 
 In the current managed Codex workspace, Chromium browser tests fail with a crashpad `setsockopt: Operation not permitted` error. Use source checks and JavaScript-level tests there, and report that visual browser behavior remains unverified.
