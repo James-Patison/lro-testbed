@@ -1,6 +1,9 @@
 'use strict';
 const staticMode=!['localhost','127.0.0.1'].includes(location.hostname);
 const preferencesKey='bike-search-preferences';
+let inventoryNotice='';
+const browserStorage={getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)};
+function readPreferences(){try{return JSON.parse(localStorage.getItem(preferencesKey)||'null');}catch{return null;}}
 let sources=[],snapshots=[],bikes=[],busy=false,visibleLimit=48,pollTimer,lastCompleted=-1;
 const money=new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0});
 const conditionLabel=c=>c==='Used'?'Used / pre-owned':c==='Unknown'?'Unspecified':c;
@@ -20,7 +23,7 @@ function rememberSelections(){
 }
 async function savePreferences(value){
   pendingPreferences=value;if(savingPreferences)return;savingPreferences=true;
-  try{while(pendingPreferences){const next=pendingPreferences;pendingPreferences=null;(staticMode ? localStorage.setItem(preferencesKey,JSON.stringify(next)) : await $.ajax({url:'/api/preferences',method:'POST',contentType:'application/json',data:JSON.stringify(next)}));preferences=next;}
+  try{while(pendingPreferences){const next=pendingPreferences;pendingPreferences=null;localStorage.setItem(preferencesKey,JSON.stringify(next));preferences=next;}
     selectionDirty=JSON.stringify(capturePreferences())!==JSON.stringify(preferences);
     $('#selection-status').text('Selections saved.');
   }catch(e){$('#selection-status').text('Selections could not be saved: '+errorText(e));}
@@ -136,7 +139,10 @@ function render(){
 }
 function displayErrors(errors){$('#fetch-errors').empty();errors.forEach(e=>{$('<p>').text((sources.find(s=>s.id===e.sourceId)?.label||e.sourceId)+': '+e.error+'. Previous cache retained when available.').appendTo('#fetch-errors');});}
 async function loadState(initial=false){
-  const state=await $.getJSON(staticMode?'data/state.json':'/api/state');sources=state.sources;snapshots=state.snapshots;
+  let state;
+  if(staticMode){const result=await bikeSearchCache.load(browserStorage,()=>$.getJSON('data/state.json'));state=result.state;inventoryNotice=result.saved?(result.cached?'Loaded inventory from browser local storage.':'Inventory saved in browser local storage.'):'Browser storage is unavailable. Inventory is available for this visit only.';}
+  else{state=await $.getJSON('/api/state');try{localStorage.setItem('bike-search-inventory-v1',JSON.stringify({sources:state.sources,snapshots:state.snapshots,errors:[],job:null}));}catch{}}
+  sources=state.sources;snapshots=state.snapshots;
   bikes=snapshots.flatMap(s=>s.bikes);renderSources();populateFilters();if(initial)applyPreferences();render();
   if(state.errors.length)displayErrors(state.errors);
   return state;
@@ -168,13 +174,13 @@ async function updateShowrooms(){
 $(async function(){
   $(document).on('click',event=>{if(!$(event.target).closest('.multi-select').length)$('.multi-select').prop('open',false);});
   $(document).on('keydown',event=>{if(event.key==='Escape')$('.multi-select').prop('open',false);});
-  window.addEventListener('pagehide',()=>{if(!staticMode&&preferencesReady&&selectionDirty&&!$('#min-price,#max-price,#min-km,#max-km').toArray().some(el=>!el.validity.valid)){clearTimeout(saveTimer);navigator.sendBeacon('/api/preferences',new Blob([JSON.stringify(capturePreferences())],{type:'application/json'}));}});
+  window.addEventListener('pagehide',()=>{if(preferencesReady&&selectionDirty&&!$('#min-price,#max-price,#min-km,#max-km').toArray().some(el=>!el.validity.valid)){clearTimeout(saveTimer);try{localStorage.setItem(preferencesKey,JSON.stringify(capturePreferences()));}catch{}}});
   $('#search,#min-price,#max-price,#min-km,#max-km').on('input',()=>{visibleLimit=48;render();rememberSelections();});
   $('#brand,#condition,#display-source,#sort').on('change',function(){if(this.multiple)updateMulti(this.id);visibleLimit=48;render();rememberSelections();});
   $('#clear').on('click',()=>{$('#search,#min-price,#max-price,#min-km,#max-km').val('');$('#brand,#condition,#display-source').val([]);$('#sort').val('name');['brand','condition','display-source'].forEach(updateMulti);visibleLimit=48;render();rememberSelections();});
   $('#more').on('click',()=>{visibleLimit+=48;render();});$('#refresh').on('click',refresh);
   $('#download').on('click',()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(window.bikeSearchResult,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='bikes-filtered.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
-  try{preferences=staticMode?JSON.parse(localStorage.getItem(preferencesKey)||'null'):await $.getJSON('/api/preferences');const state=await loadState(true);preferencesReady=true;$('#selection-status').text('Selections loaded.');if(!preferences)rememberSelections();if(state.job?.status==='running'){setBusy(true);await checkJob();}else{setBusy(false);$('#status').text('Loaded '+bikes.length+' bikes from '+snapshots.length+' saved sources.'+(staticMode?' GitHub Pages shows a saved snapshot. Run locally to refresh inventories.':' Fetching requires a manual click.'));}}
+  try{preferences=readPreferences();const state=await loadState(true);preferencesReady=true;$('#selection-status').text('Selections loaded.');if(!preferences)rememberSelections();if(state.job?.status==='running'){setBusy(true);await checkJob();}else{setBusy(false);$('#status').text('Loaded '+bikes.length+' bikes from '+snapshots.length+' saved sources.'+(staticMode?' '+inventoryNotice+' Run locally to refresh inventories.':' Fetching requires a manual click.'));}}
   catch(e){$('#status').text('Could not load saved sources: '+errorText(e));}
 });
 
