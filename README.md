@@ -12,3 +12,5 @@ Static browser projects hosted from the repository root with GitHub Pages.
 ## Local development
 
 Serve the repository root with any static web server and open `index.html`. The apps use browser local storage to save their data.
+
+- `bike-search/` is a motorcycle inventory browser. GitHub Pages displays the bundled snapshot in `data/state.json`; filters and export work in the browser, with preferences saved on the device. Run its Node server locally to fetch current inventory (see its README).

@@ -1,0 +1,408 @@
+[
+  {
+    "availability": true,
+    "color": [
+      "Orange"
+    ],
+    "color_variants": 1,
+    "created_at": 1787443836000,
+    "selected_variant_id": "239583",
+    "image_url": "https://www.teammoto.com.au/assets/full/239583.webp",
+    "item_group_id": "239583",
+    "id": "239583",
+    "price": [
+      3995
+    ],
+    "product_url": "/shop/2020-ktm-390cc-390-duke-road-239583",
+    "quantity": 1,
+    "sku": [
+      "239583"
+    ],
+    "title": "2020 Ktm 390CC 390 DUKE Road",
+    "custom_fields": {
+      "Misc09": [
+        "n"
+      ],
+      "cf_body_type": [
+        "Naked"
+      ],
+      "cf_condition": [
+        "Used"
+      ],
+      "cf_engine_cc": [
+        "373"
+      ],
+      "cf_engine_type": [
+        "Piston"
+      ],
+      "cf_make": [
+        "KTM"
+      ],
+      "cf_odometer": [
+        "37122"
+      ],
+      "cf_price_1": [
+        3995
+      ],
+      "cf_promo_price_1": [
+        0
+      ],
+      "cf_year": [
+        "2020"
+      ],
+      "mcc_images_url": [
+        "https://www.teammoto.com.au/assets/alt_1/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_10/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_11/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_12/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_13/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_14/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_15/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_16/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_17/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_18/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_19/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_2/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_20/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_21/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_22/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_23/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_24/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_25/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_26/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_27/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_28/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_3/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_4/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_5/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_6/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_7/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_8/239583.webp",
+        "https://www.teammoto.com.au/assets/alt_9/239583.webp",
+        "https://www.teammoto.com.au/assets/full/239583.webp"
+      ]
+    },
+    "variants": [
+      {
+        "sku": "239583",
+        "custom_fields": {
+          "cf_price_1": 3995,
+          "cf_promo_price_1": 0
+        }
+      }
+    ],
+    "reviews": {},
+    "stickers": {
+      "in-stock": true,
+      "out-of-stock": false,
+      "discount": false,
+      "free-shipping": false
+    }
+  },
+  {
+    "availability": true,
+    "color": [
+      "Black"
+    ],
+    "color_variants": 1,
+    "created_at": 1780707707000,
+    "selected_variant_id": "239170",
+    "image_url": "https://www.teammoto.com.au/assets/full/239170.webp",
+    "item_group_id": "239170",
+    "id": "239170",
+    "price": [
+      28995
+    ],
+    "product_url": "/shop/2024-harley-davidson-1900cc-fxbr-breakout-117-crui-239170",
+    "quantity": 1,
+    "sku": [
+      "239170"
+    ],
+    "title": "2024 Harley-Davidson Breakout 117 (FXBR) Cruiser",
+    "custom_fields": {
+      "Misc09": [
+        "n"
+      ],
+      "cf_body_type": [
+        "CRUISER"
+      ],
+      "cf_condition": [
+        "Used"
+      ],
+      "cf_engine_cc": [
+        "1923"
+      ],
+      "cf_engine_type": [
+        "Piston"
+      ],
+      "cf_make": [
+        "Harley-Davidson"
+      ],
+      "cf_odometer": [
+        "12588"
+      ],
+      "cf_price_1": [
+        28995
+      ],
+      "cf_promo_price_1": [
+        0
+      ],
+      "cf_year": [
+        "2024"
+      ],
+      "mcc_images_url": [
+        "https://www.teammoto.com.au/assets/alt_1/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_10/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_11/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_12/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_13/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_14/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_15/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_16/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_17/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_18/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_19/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_2/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_20/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_21/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_22/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_23/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_24/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_25/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_26/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_27/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_28/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_29/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_3/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_30/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_4/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_5/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_6/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_7/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_8/239170.webp",
+        "https://www.teammoto.com.au/assets/alt_9/239170.webp",
+        "https://www.teammoto.com.au/assets/full/239170.webp"
+      ]
+    },
+    "variants": [
+      {
+        "sku": "239170",
+        "custom_fields": {
+          "cf_price_1": 28995,
+          "cf_promo_price_1": 0
+        }
+      }
+    ],
+    "reviews": {},
+    "stickers": {
+      "in-stock": true,
+      "out-of-stock": false,
+      "discount": false,
+      "free-shipping": false
+    }
+  },
+  {
+    "availability": true,
+    "color": [
+      "Black"
+    ],
+    "color_variants": 1,
+    "created_at": 1790304679000,
+    "selected_variant_id": "239852",
+    "image_url": "https://www.teammoto.com.au/assets/full/239852.webp",
+    "item_group_id": "239852",
+    "id": "239852",
+    "price": [
+      21795
+    ],
+    "product_url": "/shop/2015-harley-davidson-1700cc-fxsb-softail-breakout-239852",
+    "quantity": 1,
+    "sku": [
+      "239852"
+    ],
+    "title": "2015 Harley-Davidson Breakout 103 (FXSB) Cruiser",
+    "custom_fields": {
+      "Misc09": [
+        "n"
+      ],
+      "cf_body_type": [
+        "CRUISER"
+      ],
+      "cf_condition": [
+        "Used"
+      ],
+      "cf_engine_cc": [
+        "1688"
+      ],
+      "cf_engine_type": [
+        "Piston"
+      ],
+      "cf_make": [
+        "Harley-Davidson"
+      ],
+      "cf_odometer": [
+        "22895"
+      ],
+      "cf_price_1": [
+        21795
+      ],
+      "cf_promo_price_1": [
+        0
+      ],
+      "cf_year": [
+        "2015"
+      ],
+      "mcc_images_url": [
+        "https://www.teammoto.com.au/assets/alt_1/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_10/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_11/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_12/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_13/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_14/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_15/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_16/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_17/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_18/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_19/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_2/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_20/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_21/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_22/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_23/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_24/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_25/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_26/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_27/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_28/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_29/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_3/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_30/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_4/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_5/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_6/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_7/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_8/239852.webp",
+        "https://www.teammoto.com.au/assets/alt_9/239852.webp",
+        "https://www.teammoto.com.au/assets/full/239852.webp"
+      ]
+    },
+    "variants": [
+      {
+        "sku": "239852",
+        "custom_fields": {
+          "cf_price_1": 21795,
+          "cf_promo_price_1": 0
+        }
+      }
+    ],
+    "reviews": {},
+    "stickers": {
+      "in-stock": true,
+      "out-of-stock": false,
+      "discount": false,
+      "free-shipping": false
+    }
+  },
+  {
+    "availability": true,
+    "color": [
+      "White"
+    ],
+    "color_variants": 1,
+    "created_at": 1790578310000,
+    "selected_variant_id": "239884",
+    "image_url": "https://www.teammoto.com.au/assets/full/239884.webp",
+    "item_group_id": "239884",
+    "id": "239884",
+    "price": [
+      10495
+    ],
+    "product_url": "/shop/2022-triumph-660cc-street-triple-s-660-lams-road-239884",
+    "quantity": 1,
+    "sku": [
+      "239884"
+    ],
+    "title": "2022 Triumph 660CC STREET TRIPLE S 660 LAMS Road",
+    "custom_fields": {
+      "Misc09": [
+        "n"
+      ],
+      "cf_body_type": [
+        "Naked"
+      ],
+      "cf_condition": [
+        "Used"
+      ],
+      "cf_engine_cc": [
+        "660"
+      ],
+      "cf_engine_type": [
+        "Piston"
+      ],
+      "cf_make": [
+        "Triumph"
+      ],
+      "cf_odometer": [
+        "19241"
+      ],
+      "cf_price_1": [
+        10495
+      ],
+      "cf_promo_price_1": [
+        0
+      ],
+      "cf_year": [
+        "2022"
+      ],
+      "mcc_images_url": [
+        "https://www.teammoto.com.au/assets/alt_1/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_10/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_11/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_12/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_13/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_14/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_15/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_16/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_17/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_18/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_19/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_2/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_20/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_21/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_22/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_23/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_24/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_25/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_26/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_27/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_28/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_29/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_3/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_30/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_4/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_5/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_6/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_7/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_8/239884.webp",
+        "https://www.teammoto.com.au/assets/alt_9/239884.webp",
+        "https://www.teammoto.com.au/assets/full/239884.webp"
+      ]
+    },
+    "variants": [
+      {
+        "sku": "239884",
+        "custom_fields": {
+          "cf_price_1": 10495,
+          "cf_promo_price_1": 0
+        }
+      }
+    ],
+    "reviews": {},
+    "stickers": {
+      "in-stock": true,
+      "out-of-stock": false,
+      "discount": false,
+      "free-shipping": false
+    }
+  }
+]

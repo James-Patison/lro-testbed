@@ -1,0 +1,217 @@
+[
+  {
+    "id": "brisbane-used-windsor",
+    "provider": "brisbane",
+    "dealer": "Brisbane Motorcycles",
+    "label": "Brisbane Motorcycles · Windsor used",
+    "showroom": "Windsor",
+    "condition": "Used",
+    "url": "https://www.brisbanemotorcycles.com.au/used-bikes"
+  },
+  {
+    "id": "brisbane-new",
+    "provider": "brisbane",
+    "dealer": "Brisbane Motorcycles",
+    "label": "Brisbane Motorcycles · New catalogue",
+    "showroom": null,
+    "condition": "New",
+    "url": "https://www.brisbanemotorcycles.com.au/new-bikes"
+  },
+  {
+    "id": "olivers",
+    "provider": "olivers",
+    "dealer": "Olivers Motorcycles",
+    "label": "Olivers Motorcycles · Moorooka",
+    "showroom": "Moorooka",
+    "url": "https://www.oliversmotorcycles.com.au/stock/all-bikes-for-sale"
+  },
+  {
+    "id": "teammoto-blacktown",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Blacktown",
+    "showroom": "Blacktown",
+    "dealership": "TeamMoto Blacktown",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-cairns",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Cairns",
+    "showroom": "Cairns",
+    "dealership": "TeamMoto Cairns",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-campbelltown",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Campbelltown",
+    "showroom": "Campbelltown",
+    "dealership": "TeamMoto Campbelltown",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-canberra",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Canberra",
+    "showroom": "Canberra",
+    "dealership": "TeamMoto Canberra",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-caringbah",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Caringbah",
+    "showroom": "Caringbah",
+    "dealership": "TeamMoto Caringbah",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-dandenong",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Dandenong",
+    "showroom": "Dandenong",
+    "dealership": "TeamMoto Dandenong",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-enoggera",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Enoggera",
+    "showroom": "Enoggera",
+    "dealership": "TeamMoto Enoggera",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-gold-coast",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Gold Coast",
+    "showroom": "Gold Coast",
+    "dealership": "TeamMoto Gold Coast",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-gold-coast-kawasaki-indian-motorcycle",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Gold Coast (Kawasaki/Indian Motorcycle)",
+    "showroom": "Gold Coast (Kawasaki/Indian Motorcycle)",
+    "dealership": "TeamMoto Gold Coast (Kawasaki/Indian Motorcycle)",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-ipswich",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Ipswich",
+    "showroom": "Ipswich",
+    "dealership": "TeamMoto Ipswich",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-moorooka",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Moorooka",
+    "showroom": "Moorooka",
+    "dealership": "TeamMoto Moorooka",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-nerang",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Nerang",
+    "showroom": "Nerang",
+    "dealership": "TeamMoto Nerang",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-springwood-yamaha-kawasaki",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Springwood (Yamaha/Kawasaki)",
+    "showroom": "Springwood (Yamaha/Kawasaki)",
+    "dealership": "TeamMoto Springwood (Yamaha/Kawasaki)",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-springwood-cfmoto",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Springwood CFMOTO",
+    "showroom": "Springwood CFMOTO",
+    "dealership": "TeamMoto Springwood CFMOTO",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-springwood-euro",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Springwood Euro",
+    "showroom": "Springwood Euro",
+    "dealership": "TeamMoto Springwood Euro",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-springwood-honda",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Springwood Honda",
+    "showroom": "Springwood Honda",
+    "dealership": "TeamMoto Springwood Honda",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-springwood-triumph",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Springwood Triumph",
+    "showroom": "Springwood Triumph",
+    "dealership": "TeamMoto Springwood Triumph",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-sunshine-coast",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Sunshine Coast",
+    "showroom": "Sunshine Coast",
+    "dealership": "TeamMoto Sunshine Coast",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-townsville",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Townsville",
+    "showroom": "Townsville",
+    "dealership": "TeamMoto Townsville",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-virginia",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Virginia",
+    "showroom": "Virginia",
+    "dealership": "TeamMoto Virginia",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  },
+  {
+    "id": "teammoto-wide-bay",
+    "provider": "teammoto",
+    "dealer": "TeamMoto",
+    "label": "TeamMoto Wide Bay",
+    "showroom": "Wide Bay",
+    "dealership": "TeamMoto Wide Bay",
+    "url": "https://www.teammoto.com.au/motorcycles/"
+  }
+]

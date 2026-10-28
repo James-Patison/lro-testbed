@@ -18,3 +18,5 @@ Use the approved GitHub connection for repository operations. The GitHub CLI (`g
 For work on this repository, you may use the cloud browser for testing and push completed changes to the repository without asking for separate confirmation. Platform-enforced tool permissions and approvals still apply.
 
 In the current managed Codex workspace, Chromium browser tests fail with a crashpad `setsockopt: Operation not permitted` error. Use source checks and JavaScript-level tests there, and report that visual browser behavior remains unverified.
+
+Bike Search also includes a local Node server and adapters. Its Pages version uses a bundled snapshot under `data/` and browser local storage. Keep live dealer fetching in the local server.

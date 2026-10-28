@@ -1,0 +1,1 @@
+{"name":"bike-search","version":"2.0.0","private":true,"description":"Local multi-source motorcycle inventory browser","scripts":{"start":"node server.js","test":"node --test tests/*.test.js"},"engines":{"node":">=20.18.1"},"dependencies":{"cheerio":"1.1.2"}}
