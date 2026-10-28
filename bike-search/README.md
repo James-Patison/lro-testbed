@@ -1,70 +1,31 @@
 # Bike Search
 
-A local jQuery inventory browser combining multiple motorcycle dealers into a shared card and JSON format.
+A browser-only motorcycle inventory browser hosted on GitHub Pages. No local server, account, proxy or private API credential is needed for supported live feeds.
 
-## Run
+## Use
 
-Requires Node.js 20.18.1 or newer. In this folder:
+Open Bike Search from the main project index. Select Olivers or TeamMoto showrooms and click **Fetch selected sources**. Downloads are manual; opening the page never starts a dealer inventory fetch. Keep the tab open until fetching finishes.
 
-```powershell
-npm install
-npm start
-```
+Each source is refreshed separately. Completed sources replace their own saved listings; failed or incomplete sources keep their previous listings while the remaining sources continue. TeamMoto pagination checks showroom filtering, duplicate results and completeness. Update showroom list discovers additional TeamMoto showrooms directly from its public search API.
 
-Then open http://127.0.0.1:8080. Use Ctrl+C to stop the server. The browser must use the local server; opening index.html directly will not work.
+## Browser storage
 
-## Sources and scope
+The first visit seeds browser local storage from data/state.json. Later visits read that cache. Fresh listings, source registry and filter selections are saved on this browser and device. Clearing site data restores the bundled snapshot on the next visit. Blocked or full storage permits browsing for the current visit, with a visible notice that changes cannot be saved. Photos load from dealer image hosts and are not cached by the app.
 
-- Brisbane Motorcycles used: only cards explicitly labelled Windsor.
-- Brisbane Motorcycles new: all new catalogue models, labelled Showroom unconfirmed. These are catalogue entries, not a guarantee of showroom stock. Missing kilometres and engine capacity remain null.
-- Olivers Motorcycles: the Moorooka inventory, including New, Used and Demo.
-- TeamMoto: a separate selectable source for each showroom in the public inventory search. Each showroom fetch includes its New, Used and Demo bikes. Update showroom list checks for additional showroom names; it does not download bike inventories.
+Filtering supports multiple brands, conditions and sources, inclusive price/kilometre ranges, search, sorting, pagination and filtered JSON export. Unknown numeric values remain null, while actual zero readings remain zero. Always check dealer links for current availability and exact pricing.
 
-sources.json contains the local source registry. lib/sources.js contains the source adapters and shared normalisation. TeamMoto uses its storefront's public Findify search key, and Olivers uses the inventory endpoint configured on its public stock page. No account or private API credentials are needed. These are website feeds and can change; adapter errors are shown without replacing the previous good cache.
+## Live source support
 
-## Manual fetching and caches
+- Olivers: New, Used and Demo inventory from its public, browser-accessible stock feed. The public feed URL is configured in js/sources.js; update it if the dealer changes its stock configuration.
+- TeamMoto: public Findify search API, using the storefront's public search key. Each showroom includes New, Used and Demo bikes. Requests contain transient random identifiers and no account credentials.
+- Brisbane Motorcycles: saved listings only on GitHub Pages. The dealer does not return the cross-origin permission required for browser JavaScript to read its pages. Its refresh controls are disabled and explain the limitation. Changing this requires the dealer to allow browser requests, or a separately hosted fetching service. The existing local adapters remain available for development but are not used by the hosted app.
 
-Opening the app reads local files only for inventory. It never starts a new inventory download automatically. Tick the desired sources/showrooms and click Fetch selected sources. A progress job reads each selected source in turn. Each completed source is saved independently and atomically; a failure retains that source's last good cache and the remaining selected sources continue.
+Dealer feeds and their browser permissions can change. Errors are shown without erasing the last good inventory.
 
-Cache files are under cache/:
+## Development and verification
 
-- brisbane-used-windsor.json
-- brisbane-new.json
-- olivers.json
-- teammoto-<showroom>.json (one per fetched showroom)
+Serve the repository with any static web server. The browser app uses js/app.js, js/cache.js, js/sources.js and css/styles.css, with relative asset paths. It makes no /api requests.
 
-Unchecked sources are not fetched or overwritten. Fetch checkboxes control downloads, while Display source filters the combined saved results. Source selections are remembered in this browser. Original bikes-cache.json is migrated once to the Windsor cache without deleting the original file. Existing test.html, test.js and exported JSON files are preserved.
+Run npm install followed by npm test in this folder for cache, browser adapter and captured-source parser tests. Tests cover cache reopening, damaged/unavailable storage, feed normalization, showroom filters and truncated pagination.
 
-Photos are referenced by their source URLs and lazy-loaded into cards when available; image bytes are not cached locally. Missing or failed photos show a placeholder. Thus inventory browsing is cached, but photos still need a connection to the dealer's image host.
-
-## Filters and export
-
-Brand options are generated from all cached bikes, with case normalisation across feeds. Price and kilometre ranges are inclusive. Unknown values are excluded only when their range is set. Conditions are New, Used/pre-owned, Demo and Unspecified. Search matches name, brand and stock number. Sorting and Show more affect presentation only. Export filtered JSON includes every matching item, even those beyond the currently displayed cards.
-
-Each bike has: id, sourceId, dealer, showroom (nullable), name, brand, condition, stockNumber, priceAud, priceNote, odometerKm, engineCapacityCc, url, imageUrl and listingNote. Missing numeric values are null, while actual zero readings remain zero. Listed prices are preserved with source qualifiers where available; consult the bike page for exact rideaway or on-road pricing.
-
-## Local API
-
-- GET /api/state: registry, all saved snapshots, cache errors and current/last job.
-- GET /api/cache/<sourceId>: one cached snapshot, or null if never fetched.
-- POST /api/fetch with JSON {"sourceIds":["olivers","teammoto-virginia"]}: starts a selected-source job.
-- GET /api/job: progress and per-source results.
-- POST /api/showrooms with {}: manually discovers additional TeamMoto showrooms.
-
-POST requests require application/json and a local-page Origin header. The server only listens on 127.0.0.1:8080. While a fetch is running it rejects another fetch to prevent overlapping writes. If the page closes during a fetch, the server finishes the job; reopening reconnects to its progress.
-
-## Verification
-
-Run npm test for captured-source parser tests. Tests cover Windsor-only filtering, unconfirmed new catalogue locations, missing readings versus zero, brand and condition mapping, pagination links and per-bike links/photos. Browser checks additionally exercise live source fetches, separate cache files, cached reopening without a new fetch, combined filters and responsive layouts.
-
-## Saved selections and multi-select filters
-
-Brand, condition and display-source dropdowns support multiple checkbox selections. Selected options within one filter use OR; separate filters use AND. Clearing a dropdown includes all values. Sort order remains one choice: Name, Price low-to-high, Price high-to-low, or Kilometres low-to-high. Missing prices always appear last, including descending price order.
-
-Fetch-source checkboxes, search text, brand/condition/source selections, price and kilometre bounds, and sort order are automatically saved in browser local storage. The page loads these selections before applying filters. Each browser keeps its own selections. Source checkboxes from the former browser-local setting are imported on first load when no selections file exists. Clear filters is also saved, while leaving fetch-source checkboxes intact.
-
-GET /api/preferences reads the saved selections (null before the first save). POST /api/preferences validates and atomically saves the complete selection object. Selection saves work while an inventory fetch is running. No selection change triggers an inventory download. Filter arrays in JSON exports are named brands, conditions and sourceIds.
-
-## GitHub Pages
-
-On the first hosted visit, the app loads data/state.json and caches the inventory in browser local storage. Later visits read that cache without downloading the inventory again. Clearing this site’s browser data resets the cache to the bundled snapshot on the next visit. If storage is blocked or full, browsing still works for the current visit. Filtering, sorting and JSON export work; selections are saved in browser local storage. Live dealer fetching and showroom discovery require the local Node server. The snapshot is historical; check dealer links for availability and current prices. JavaScript and CSS live under js/ and css/.
+The optional legacy Node server (npm start) and lib/sources.js are retained for development, including Brisbane retrieval; they are not required for GitHub Pages operation.

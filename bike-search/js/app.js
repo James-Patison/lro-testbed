@@ -1,10 +1,9 @@
 'use strict';
-const staticMode=!['localhost','127.0.0.1'].includes(location.hostname);
 const preferencesKey='bike-search-preferences';
 let inventoryNotice='';
 const browserStorage={getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)};
 function readPreferences(){try{return JSON.parse(localStorage.getItem(preferencesKey)||'null');}catch{return null;}}
-let sources=[],snapshots=[],bikes=[],busy=false,visibleLimit=48,pollTimer,lastCompleted=-1;
+let sources=[],snapshots=[],bikes=[],busy=false,visibleLimit=48;
 const money=new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0});
 const conditionLabel=c=>c==='Used'?'Used / pre-owned':c==='Unknown'?'Unspecified':c;
 const errorText=e=>e.responseJSON?.error || e.message || e.statusText || 'Network error';
@@ -57,18 +56,20 @@ function applyPreferences(){
   }
 }
 function selectedSources(){return $('.source-check:checked').toArray().map(e=>e.value);}
-function setBusy(value){busy=value;if(staticMode){$("#refresh,#update-showrooms,.source-check,.source-tools button").prop("disabled",true);return;}$('#refresh,#update-showrooms,.source-check,.source-tools button').prop('disabled',value);}
+function setBusy(value){busy=value;$('#refresh,#update-showrooms,.source-check,.source-tools button').prop('disabled',value);$('.source-check[data-blocked]').prop('disabled',true);}
 function renderSources(){
   const teamOpen=$('.team-sources').prop('open');
   const previous=$('.source-check').length?selectedSources():savedSelections();
-  const selected=new Set(previous ?? ['brisbane-used-windsor','brisbane-new','olivers']);
+  const selected=new Set(previous ?? ['olivers','teammoto-virginia']);
   const $root=$('#sources').empty();
   const row=source=>{
     const snapshot=snapshots.find(s=>s.sourceId===source.id);
     const $row=$('<div>').addClass('source-row');
     const $check=$('<input>').attr({type:'checkbox',value:source.id}).addClass('source-check').prop('checked',selected.has(source.id));
+    if(source.provider==='brisbane')$check.attr('data-blocked','true').prop('checked',false).prop('disabled',true);
     $('<label>').append($check,document.createTextNode(source.label)).appendTo($row);
     $('<span>').addClass('source-meta').text(snapshot?snapshot.bikes.length+' bikes · '+new Date(snapshot.fetchedAt).toLocaleString('en-AU'):'Not fetched yet').appendTo($row);
+    if(source.provider==='brisbane')$('<span>').addClass('source-meta').text('Saved listings only — dealer blocks browser refresh').appendTo($row);
     return $row;
   };
   sources.filter(s=>s.provider!=='teammoto').forEach(s=>$root.append(row(s)));
@@ -138,38 +139,44 @@ function render(){
   $('#json').text(JSON.stringify(window.bikeSearchResult,null,2));
 }
 function displayErrors(errors){$('#fetch-errors').empty();errors.forEach(e=>{$('<p>').text((sources.find(s=>s.id===e.sourceId)?.label||e.sourceId)+': '+e.error+'. Previous cache retained when available.').appendTo('#fetch-errors');});}
-async function loadState(initial=false){
-  let state;
-  if(staticMode){const result=await bikeSearchCache.load(browserStorage,()=>$.getJSON('data/state.json'));state=result.state;inventoryNotice=result.saved?(result.cached?'Loaded inventory from browser local storage.':'Inventory saved in browser local storage.'):'Browser storage is unavailable. Inventory is available for this visit only.';}
-  else{state=await $.getJSON('/api/state');try{localStorage.setItem('bike-search-inventory-v1',JSON.stringify({sources:state.sources,snapshots:state.snapshots,errors:[],job:null}));}catch{}}
-  sources=state.sources;snapshots=state.snapshots;
+function updateListings(initial=false){
   bikes=snapshots.flatMap(s=>s.bikes);renderSources();populateFilters();if(initial)applyPreferences();render();
-  if(state.errors.length)displayErrors(state.errors);
-  return state;
 }
-async function checkJob(){
-  try{
-    const job=await $.getJSON('/api/job');if(!job){setBusy(false);return;}
-    $('#status').text(job.message+' · '+job.results.length+' / '+job.sourceIds.length+' sources finished');
-    if(job.results.length!==lastCompleted){lastCompleted=job.results.length;await loadState();displayErrors(job.results.filter(r=>!r.ok));}
-    if(job.status==='running'){pollTimer=setTimeout(checkJob,1000);return;}
-    await loadState();displayErrors(job.results.filter(r=>!r.ok));
-    const successes=job.results.filter(r=>r.ok).length;
-    $('#status').text('Finished: '+successes+' source'+(successes===1?'':'s')+' saved'+(successes<job.results.length?', '+(job.results.length-successes)+' failed':'')+'. Lists will stay saved until you fetch again.');
-    setBusy(false);
-  }catch(e){$('#status').text('Could not read fetch progress: '+errorText(e)+'. Reload to reconnect; the server may still be fetching.');setBusy(false);}
+function persistInventory(){
+  try{localStorage.setItem('bike-search-inventory-v1',JSON.stringify({sources,snapshots,errors:[],job:null}));return true;}
+  catch{$('#selection-status').text('Browser storage is full or unavailable. Fresh listings are available for this visit only.');return false;}
+}
+async function loadState(initial=false){
+  const result=await bikeSearchCache.load(browserStorage,()=>$.getJSON('data/state.json'));
+  sources=result.state.sources;snapshots=result.state.snapshots;
+  inventoryNotice=result.saved?(result.cached?'Loaded inventory from browser local storage.':'Inventory saved in browser local storage.'):'Browser storage is unavailable. Inventory is available for this visit only.';
+  updateListings(initial);
 }
 async function refresh(){
-  if(busy)return;const sourceIds=selectedSources();
-  if(!sourceIds.length){$('#status').text('Select at least one source to fetch.');return;}
-  rememberSelections();setBusy(true);lastCompleted=-1;$('#fetch-errors').empty();$('#status').text('Starting selected sources…');
-  try{await $.ajax({url:'/api/fetch',method:'POST',contentType:'application/json',data:JSON.stringify({sourceIds})});await checkJob();}
-  catch(e){$('#status').text('Could not start fetch: '+errorText(e));setBusy(false);}
+  if(busy)return;
+  const selected=selectedSources().map(id=>sources.find(source=>source.id===id)).filter(Boolean);
+  if(!selected.length){$('#status').text('Select at least one source to fetch.');return;}
+  rememberSelections();setBusy(true);displayErrors([]);
+  const errors=[];let completed=0,saved=true;
+  try{
+    for(const source of selected){
+      try{
+        const snapshot=await bikeSearchSources.fetchSource(source,message=>$('#status').text(source.label+': '+message));
+        snapshots=snapshots.filter(s=>s.sourceId!==source.id).concat(snapshot);
+        saved=persistInventory()&&saved;completed++;updateListings();
+      }catch(error){errors.push({sourceId:source.id,error:error.message});displayErrors(errors);}
+    }
+    $('#status').text('Finished: '+completed+' source(s) refreshed'+(errors.length?', '+errors.length+' failed':'')+'. '+(saved?'Fresh listings saved in this browser.':'Fresh listings could not be saved and are available for this visit only.'));
+  }finally{setBusy(false);}
 }
 async function updateShowrooms(){
   if(busy)return;setBusy(true);$('#status').text('Checking TeamMoto showroom list…');
-  try{await $.ajax({url:'/api/showrooms',method:'POST',contentType:'application/json',data:'{}'});await loadState();$('#status').text('Showroom list updated. Select showrooms and click Fetch selected sources to get their bikes.');}
-  catch(e){$('#status').text('Showroom update failed: '+errorText(e));}finally{setBusy(false);}
+  try{
+    const discovered=await bikeSearchSources.discoverShowrooms();
+    for(const source of discovered)if(!sources.some(s=>s.id===source.id))sources.push(source);
+    const saved=persistInventory();renderSources();
+    $('#status').text('Showroom list updated'+(saved?' and saved in this browser.':' for this visit only.')+' Select showrooms and fetch their listings.');
+  }catch(error){$('#status').text('Showroom update failed: '+error.message);}finally{setBusy(false);}
 }
 $(async function(){
   $(document).on('click',event=>{if(!$(event.target).closest('.multi-select').length)$('.multi-select').prop('open',false);});
@@ -180,7 +187,7 @@ $(async function(){
   $('#clear').on('click',()=>{$('#search,#min-price,#max-price,#min-km,#max-km').val('');$('#brand,#condition,#display-source').val([]);$('#sort').val('name');['brand','condition','display-source'].forEach(updateMulti);visibleLimit=48;render();rememberSelections();});
   $('#more').on('click',()=>{visibleLimit+=48;render();});$('#refresh').on('click',refresh);
   $('#download').on('click',()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(window.bikeSearchResult,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='bikes-filtered.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
-  try{preferences=readPreferences();const state=await loadState(true);preferencesReady=true;$('#selection-status').text('Selections loaded.');if(!preferences)rememberSelections();if(state.job?.status==='running'){setBusy(true);await checkJob();}else{setBusy(false);$('#status').text('Loaded '+bikes.length+' bikes from '+snapshots.length+' saved sources.'+(staticMode?' '+inventoryNotice+' Run locally to refresh inventories.':' Fetching requires a manual click.'));}}
+  try{preferences=readPreferences();await loadState(true);preferencesReady=true;$('#selection-status').text('Selections loaded.');if(!preferences)rememberSelections();setBusy(false);$('#status').text('Loaded '+bikes.length+' bikes from '+snapshots.length+' saved sources. '+inventoryNotice+' Choose sources and click Fetch selected sources for fresh listings.');}
   catch(e){$('#status').text('Could not load saved sources: '+errorText(e));}
 });
 

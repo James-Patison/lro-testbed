@@ -13,4 +13,4 @@ Static browser projects hosted from the repository root with GitHub Pages.
 
 Serve the repository root with any static web server and open `index.html`. The apps use browser local storage to save their data.
 
-- `bike-search/` is a motorcycle inventory browser. GitHub Pages seeds browser local storage from `data/state.json` on first visit and reuses the cached inventory on later visits; filters and export work in the browser, with preferences saved on the device. Run its Node server locally to fetch current inventory (see its README).
+- `bike-search/` is a motorcycle inventory browser. GitHub Pages seeds browser local storage from `data/state.json` on first visit and reuses the cached inventory on later visits; filters and export work in the browser, with preferences saved on the device. Olivers and TeamMoto refresh directly from the browser; Brisbane remains saved-only because the dealer blocks browser requests (see its README).

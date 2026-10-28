@@ -6,7 +6,7 @@ const {randomUUID}=require('node:crypto');
 const {fetchSource,teamPage,bike}=require('./lib/sources');
 const ROOT=__dirname,CACHE=path.join(ROOT,'cache');
 let sources=require('./sources.json'),job=null;
-const files={'/js/cache.js':['js/cache.js','text/javascript'],'/':['index.html','text/html'],'/js/app.js':['js/app.js','text/javascript'],'/css/styles.css':['css/styles.css','text/css'],'/js/jquery.min.js':['js/jquery.min.js','text/javascript']};
+const files={'/js/sources.js':['js/sources.js','text/javascript'],'/js/cache.js':['js/cache.js','text/javascript'],'/':['index.html','text/html'],'/js/app.js':['js/app.js','text/javascript'],'/css/styles.css':['css/styles.css','text/css'],'/js/jquery.min.js':['js/jquery.min.js','text/javascript']};
 const cacheFile=id=>path.join(CACHE,id+'.json');
 const preferencesFile=path.join(ROOT,'user-selections.json');
 let preferencesWrites=Promise.resolve();
