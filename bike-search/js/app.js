@@ -184,6 +184,8 @@ async function updateShowrooms(){
   }catch(error){$('#status').text('Showroom update failed: '+error.message);}finally{setBusy(false);}
 }
 $(async function(){
+  // Render controls immediately, even if inventory loading fails or takes time.
+  ['brand','type','condition','display-source'].forEach(updateMulti);
   $(document).on('click',event=>{if(!$(event.target).closest('.multi-select').length)$('.multi-select').prop('open',false);});
   $(document).on('keydown',event=>{if(event.key==='Escape')$('.multi-select').prop('open',false);});
   window.addEventListener('pagehide',()=>{if(preferencesReady&&selectionDirty&&!$('#min-price,#max-price,#min-km,#max-km').toArray().some(el=>!el.validity.valid)){clearTimeout(saveTimer);try{localStorage.setItem(preferencesKey,JSON.stringify(capturePreferences()));}catch{}}});
