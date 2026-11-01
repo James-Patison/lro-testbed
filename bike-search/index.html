@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bike Search</title><link rel="stylesheet" href="css/styles.css"><script defer src="js/jquery.min.js"></script><script defer src="js/cache.js"></script><script defer src="js/sources.js"></script><script defer src="js/app.js"></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bike Search</title><link rel="stylesheet" href="css/styles.css?v=20261101-2"><script defer src="js/jquery.min.js"></script><script defer src="js/cache.js"></script><script defer src="js/sources.js?v=20261101-2"></script><script defer src="js/app.js?v=20261101-2"></script></head>
 <body><header><p class="eyebrow">YOUR MOTORCYCLE SHORTLIST STARTS HERE</p><h1>Bike Search</h1><p class="intro">One view of Brisbane Motorcycles, Olivers and TeamMoto.</p></header>
-<section class="panel sources-panel" aria-labelledby="sources-heading"><div class="section-heading"><div><h2 id="sources-heading">Sources to fetch</h2><p class="muted">Choose what to update. Listings are cached in this browser. All saved sources stay available in the results below.</p></div><button id="refresh" class="primary" disabled>Fetch selected sources</button></div>
+<details class="panel sources-panel collapsible-panel" open><summary class="panel-toggle" id="sources-heading">Sources to fetch</summary><div class="panel-content"><div class="section-heading"><div><h2>Fetch listings</h2><p class="muted">Choose what to update. Listings are cached in this browser. All saved sources stay available in the results below.</p></div><button id="refresh" class="primary" disabled>Fetch selected sources</button></div>
 <div id="sources"></div><p class="muted small">Fetch fresh Olivers and TeamMoto listings directly into this browser. Brisbane Motorcycles blocks browser refresh; its saved listings remain available. Keep this tab open until fetching finishes.</p>
-<p id="status" role="status">Loading saved lists…</p><div id="fetch-errors" role="alert"></div></section>
-<section class="panel" aria-label="Filter bikes"><div class="filters">
+<p id="status" role="status">Loading saved lists…</p><div id="fetch-errors" role="alert"></div></div></details>
+<details class="panel collapsible-panel" open><summary class="panel-toggle">Filter bikes</summary><div class="panel-content"><div class="filters">
 <label class="search-label">Search bikes<input id="search" type="search" placeholder="Name, brand or stock number"></label>
 <div class="filter-field"><span id="brand-label">Brand</span><select id="brand" multiple hidden aria-labelledby="brand-label"></select></div>
 <div class="filter-field"><span id="type-label">Bike type</span><select id="type" multiple hidden aria-labelledby="type-label"></select></div>
@@ -15,7 +15,7 @@
 <label>Min kilometres<input id="min-km" type="number" min="0" step="1" placeholder="No minimum"></label>
 <label>Max kilometres<input id="max-km" type="number" min="0" step="1" placeholder="No maximum"></label>
 <label>Sort by<select id="sort"><option value="name">Name</option><option value="price">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="km">Kilometres: low to high</option></select></label>
-<button id="clear">Clear filters</button></div><p class="muted small">Select several options in each dropdown. No selection means all; options within a filter are combined with OR.</p><p id="selection-status" class="muted small" role="status">Loading selections…</p><p id="filter-error" role="alert"></p></section>
+<button id="clear">Clear filters</button></div><p class="muted small">Select several options in each dropdown. No selection means all; options within a filter are combined with OR.</p><p id="selection-status" class="muted small" role="status">Loading selections…</p><p id="filter-error" role="alert"></p></div></details>
 <div class="results-heading"><p id="count" aria-live="polite"></p><button id="download" disabled>Export filtered JSON</button></div>
 <main id="items" aria-label="Bike listings"></main><div class="more"><button id="more" hidden>Show more bikes</button></div>
 <p class="muted small">Price and kilometre ranges include their endpoints. Bikes with missing values are excluded when that range is set. Advertised prices may be starting prices or exclude on-road costs; check the bike page for details.</p>
