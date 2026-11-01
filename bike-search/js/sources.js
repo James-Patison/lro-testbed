@@ -25,11 +25,26 @@ function safeUrl(value,base) {
   if(!value)return null;
   try{const u=new URL(value,base);return ['http:','https:'].includes(u.protocol)?u.href:null;}catch{return null;}
 }
+function bikeType(fields) {
+  const explicit=clean(fields.type).toLowerCase();
+  const text=[explicit,fields.name,fields.listingNote].map(clean).join(' ').toLowerCase();
+  const match=(pattern)=>pattern.test(text);
+  if(match(/\b(scooter|vespa|nmax|xmax|pcx|forza|burgman|dio|jog|agility)\b/))return 'Scooter';
+  if(match(/\b(cruiser|bobber|chopper|softail|sportster|rebel|vulcan|intruder|boulevard|chief|scout)\b/))return 'Cruiser';
+  if(match(/\b(motocross|enduro|dirt|trail bike|off.road|sx.?f|exc.?f|wr\d|yz\d|crf\d+[rx]|klx\d|kx\d|rm.?z)\b/))return 'Dirt / Enduro';
+  if(match(/\b(adventure|dual.sport|tenere|africa twin|transalp|v.strom|versys|gs adventure|r\d+gs|himalayan|desertx)\b/))return 'Adventure / Dual sport';
+  if(match(/\b(touring|tourer|gold wing|road glide|street glide|electra glide|k\d+gt|r\d+rt)\b/))return 'Touring';
+  if(match(/\b(supersport|super sport|sportbike|sports bike|panigale|ninja|fireblade|hayabusa|gsx.?r|cbr\d+rr|zx.?\d+r|r[167] |daytona)\b/))return 'Sports';
+  if(match(/\b(naked|streetfighter|street triple|speed triple|monster|duke|mt.?0?\d|z\d+|cb\d+r|sv650|trident|brutale)\b/))return 'Naked';
+  if(match(/\b(cafe racer|scrambler|bonneville|interceptor|continental gt|retro|classic)\b/))return 'Classic / Retro';
+  if(match(/\b(trike|three.wheel)\b/))return 'Trike';
+  return 'Unknown';
+}
 function bike(source,fields) {
   const url=safeUrl(fields.url,source.url);
   if(!clean(fields.name)||!url||new URL(url).origin!==new URL(source.url).origin)throw Error('A listing is missing a valid name or bike URL');
   return {id:source.id+':'+(fields.stockNumber || url),sourceId:source.id,dealer:source.dealer,showroom:source.showroom,
-    name:clean(fields.name),brand:brand(fields.brand),condition:condition(fields.condition),stockNumber:clean(fields.stockNumber)||null,
+    name:clean(fields.name),brand:brand(fields.brand),type:bikeType(fields),condition:condition(fields.condition),stockNumber:clean(fields.stockNumber)||null,
     priceAud:numeric(fields.priceAud),priceNote:clean(fields.priceNote)||null,odometerKm:numeric(fields.odometerKm),engineCapacityCc:numeric(fields.engineCapacityCc),
     url,imageUrl:safeUrl(fields.imageUrl,source.url),listingNote:clean(fields.listingNote)||null};
 }
@@ -46,7 +61,7 @@ function parseOlivers(items,source) {
     if(!i.id||!i.make||!i.model||!i.veh_type)throw Error('Incomplete Olivers listing');
     return bike(source,{name:[i.year,i.make,i.model,i.variations,i.series].filter(Boolean).join(' '),brand:i.make,condition:i.veh_type,stockNumber:i.stock_number,
       priceAud:i.price,priceNote:i.price_qualifier,odometerKm:i.odometer,engineCapacityCc:i.size_option==='CC'?i.size:null,
-      url:oliversUrl(i,source.url),imageUrl:i.images?.[0]});
+      url:oliversUrl(i,source.url),imageUrl:i.images?.[0],type:i.category||i.body_type||i.bike_type||i.style});
   });
 }
 function parseTeamMoto(items,source) {
@@ -54,7 +69,7 @@ function parseTeamMoto(items,source) {
   return items.map(i=>{
     const f=i.custom_fields||{};
     return bike(source,{name:i.title,brand:f.cf_make||i.brand,condition:f.cf_condition,stockNumber:first(i.sku)||i.id,
-      priceAud:first(i.price),priceNote:null,odometerKm:f.cf_odometer,engineCapacityCc:f.cf_engine_cc,url:i.product_url,imageUrl:i.image_url});
+      priceAud:first(i.price),priceNote:null,odometerKm:f.cf_odometer,engineCapacityCc:f.cf_engine_cc,url:i.product_url,imageUrl:i.image_url,type:f.cf_type||f.cf_bike_type||f.cf_category||i.category});
   });
 }
 

@@ -12,7 +12,7 @@ function savedSelections(){
   if(preferences)return preferences.fetchSourceIds;
   try{const saved=JSON.parse(localStorage.getItem('bike-search-sources'));return Array.isArray(saved)?saved:null;}catch{return null;}
 }
-function capturePreferences(){return {schemaVersion:1,fetchSourceIds:selectedSources(),filters:{query:$('#search').val(),brands:$('#brand').val()||[],conditions:$('#condition').val()||[],sourceIds:$('#display-source').val()||[],minPriceAud:amount('#min-price'),maxPriceAud:amount('#max-price'),minKm:amount('#min-km'),maxKm:amount('#max-km'),sort:$('#sort').val()}};}
+function capturePreferences(){return {schemaVersion:1,fetchSourceIds:selectedSources(),filters:{query:$('#search').val(),brands:$('#brand').val()||[],types:$('#type').val()||[],conditions:$('#condition').val()||[],sourceIds:$('#display-source').val()||[],minPriceAud:amount('#min-price'),maxPriceAud:amount('#max-price'),minKm:amount('#min-km'),maxKm:amount('#max-km'),sort:$('#sort').val()}};}
 function rememberSelections(){
   if(!preferencesReady)return;
   clearTimeout(saveTimer);
@@ -30,11 +30,11 @@ async function savePreferences(value){
 }
 function updateMulti(id){
   const $select=$('#'+id),selected=$select.val()||[],options=$select.find('option').toArray();
-  const titles={brand:'All brands',condition:'All conditions','display-source':'All saved sources'};
+  const titles={brand:'All brands',type:'All bike types',condition:'All conditions','display-source':'All saved sources'};
   const $old=$select.siblings('.multi-select'),open=$old.prop('open');$old.remove();
   const $details=$('<details>').addClass('multi-select').attr('data-filter',id).prop('open',!!open);
   const labels=options.filter(o=>selected.includes(o.value)).map(o=>o.textContent);
-  $('<summary>').attr('aria-label',id==='display-source'?'Display sources':id==='brand'?'Brand':'Condition').text(labels.length?(labels.length<=2?labels.join(', '):labels.length+' selected'):titles[id]).appendTo($details);
+  $('<summary>').attr('aria-label',id==='display-source'?'Display sources':id==='brand'?'Brand':id==='type'?'Bike type':'Condition').text(labels.length?(labels.length<=2?labels.join(', '):labels.length+' selected'):titles[id]).appendTo($details);
   const $menu=$('<div>').addClass('multi-options').appendTo($details);
   $('<button>').attr('type','button').text('Clear selection (show all)').on('click',()=>{$select.val([]).trigger('change');}).appendTo($menu);
   options.forEach(o=>{
@@ -50,7 +50,7 @@ function applyPreferences(){
   const f=preferences.filters;
   $('#search').val(f.query);$('#sort').val(f.sort);
   for(const [id,value]of [['min-price',f.minPriceAud],['max-price',f.maxPriceAud],['min-km',f.minKm],['max-km',f.maxKm]])$('#'+id).val(value??'');
-  for(const [id,values]of [['brand',f.brands],['condition',f.conditions],['display-source',f.sourceIds]]){
+  for(const [id,values]of [['brand',f.brands||[]],['type',f.types||[]],['condition',f.conditions],['display-source',f.sourceIds]]){
     for(const value of values)if(!$('#'+id+' option').toArray().some(o=>o.value===value))$('#'+id).append($('<option>').val(value).text(value+' (not in current cache)'));
     $('#'+id).val(values);updateMulti(id);
   }
@@ -85,26 +85,30 @@ function renderSources(){
   setBusy(busy);
 }
 function populateFilters(){
-  const currentBrand=$('#brand').val(),currentSource=$('#display-source').val();
+  const currentBrand=$('#brand').val(),currentType=$('#type').val(),currentSource=$('#display-source').val();
   $('#brand').empty();
   [...new Set(bikes.map(b=>b.brand).filter(Boolean))].sort((a,b)=>a.localeCompare(b)).forEach(name=>$('#brand').append($('<option>').val(name).text(name)));
   for(const name of currentBrand||[])if(!$('#brand option').toArray().some(o=>o.value===name))$('#brand').append($('<option>').val(name).text(name+' (not in current cache)'));
   $('#brand').val(currentBrand || []);
+  $('#type').empty();
+  [...new Set(bikes.map(b=>b.type||'Unknown'))].sort().forEach(type=>$('#type').append($('<option>').val(type).text(type)));
+  for(const type of currentType||[])if(!$('#type option').toArray().some(o=>o.value===type))$('#type').append($('<option>').val(type).text(type+' (not in current cache)'));
+  $('#type').val(currentType||[]);
   $('#display-source').empty();
   sources.filter(s=>snapshots.some(c=>c.sourceId===s.id)).forEach(s=>$('#display-source').append($('<option>').val(s.id).text(s.label)));
   for(const id of currentSource||[])if(!$('#display-source option').toArray().some(o=>o.value===id))$('#display-source').append($('<option>').val(id).text(id+' (not in current cache)'));
   $('#display-source').val(currentSource || []);
-  ['brand','condition','display-source'].forEach(updateMulti);
+  ['brand','type','condition','display-source'].forEach(updateMulti);
 }
 function amount(id){const value=$(id).val();return value===''?null:Number(value);}
 function within(value,min,max){return (min===null&&max===null)||(value!==null&&Number.isFinite(value)&&(min===null||value>=min)&&(max===null||value<=max));}
 function render(){
-  const query=$('#search').val().trim().toLowerCase(),brands=$('#brand').val()||[],conditions=$('#condition').val()||[],sourceIds=$('#display-source').val()||[];
+  const query=$('#search').val().trim().toLowerCase(),brands=$('#brand').val()||[],types=$('#type').val()||[],conditions=$('#condition').val()||[],sourceIds=$('#display-source').val()||[];
   const minPrice=amount('#min-price'),maxPrice=amount('#max-price'),minKm=amount('#min-km'),maxKm=amount('#max-km');
   const rangeInvalid=(min,max)=>[min,max].some(n=>n!==null&&(!Number.isFinite(n)||n<0))||(min!==null&&max!==null&&min>max);
   const invalid=rangeInvalid(minPrice,maxPrice)||rangeInvalid(minKm,maxKm)||$('#min-price,#max-price,#min-km,#max-km').toArray().some(el=>!el.validity.valid);
   $('#filter-error').text(invalid?'Enter valid ranges: values must be non-negative and minimum must not exceed maximum.':'');
-  const matches=invalid?[]:bikes.filter(b=>(!brands.length||brands.includes(b.brand))&&(!conditions.length||conditions.includes(b.condition))&&(!sourceIds.length||sourceIds.includes(b.sourceId))&&
+  const matches=invalid?[]:bikes.filter(b=>(!brands.length||brands.includes(b.brand))&&(!types.length||types.includes(b.type||'Unknown'))&&(!conditions.length||conditions.includes(b.condition))&&(!sourceIds.length||sourceIds.includes(b.sourceId))&&
     [b.name,b.brand,b.stockNumber].join(' ').toLowerCase().includes(query)&&within(b.priceAud,minPrice,maxPrice)&&within(b.odometerKm,minKm,maxKm));
   const sort=$('#sort').val();
   matches.sort((a,b)=>{
@@ -114,15 +118,16 @@ function render(){
     if(a[key]===null&&b[key]!==null)return 1;if(b[key]===null&&a[key]!==null)return -1;
     return (sort==='price-desc'?-1:1)*((a[key]??0)-(b[key]??0))||a.name.localeCompare(b.name);
   });
-  window.bikeSearchResult={schemaVersion:2,sources:snapshots.map(s=>({sourceId:s.sourceId,source:s.source,fetchedAt:s.fetchedAt,count:s.bikes.length})),filters:{query,brands,conditions,sourceIds,minPriceAud:minPrice,maxPriceAud:maxPrice,minKm,maxKm,sort},count:matches.length,bikes:matches};
+  window.bikeSearchResult={schemaVersion:2,sources:snapshots.map(s=>({sourceId:s.sourceId,source:s.source,fetchedAt:s.fetchedAt,count:s.bikes.length})),filters:{query,brands,types,conditions,sourceIds,minPriceAud:minPrice,maxPriceAud:maxPrice,minKm,maxKm,sort},count:matches.length,bikes:matches};
   const shown=matches.slice(0,visibleLimit);
   $('#count').text(matches.length+' of '+bikes.length+' bikes'+(shown.length<matches.length?' · showing '+shown.length:''));
   const $items=$('#items').empty();
   shown.forEach(b=>{
     const $card=$('<article>').addClass('bike').attr('data-source',b.sourceId),$photo=$('<div>').addClass('photo').appendTo($card);
-    if(b.imageUrl){$('<img>').attr({src:b.imageUrl,alt:b.name,loading:'lazy',decoding:'async',referrerpolicy:'no-referrer'}).on('error',()=>{$photo.empty().text('Photo unavailable');}).appendTo($photo);}else{$photo.text('No photo available');}
+    if(b.imageUrl){const photoUrl=new URL(b.imageUrl);const fetchedAt=snapshots.find(s=>s.sourceId===b.sourceId)?.fetchedAt;if(fetchedAt)photoUrl.searchParams.set('_bike_refresh',String(Date.parse(fetchedAt)||fetchedAt));$('<img>').attr({src:photoUrl.href,alt:b.name,loading:'lazy',decoding:'async',referrerpolicy:'no-referrer'}).on('error',()=>{$photo.empty().text('Photo unavailable');}).appendTo($photo);}else{$photo.text('No photo available');}
     const $body=$('<div>').addClass('bike-body').appendTo($card);
     $('<p>').addClass('eyebrow').text(b.brand||'Motorcycle').append($('<span>').addClass('badge').text(conditionLabel(b.condition))).appendTo($body);
+    $('<p>').addClass('specs').text('Type: '+(b.type||'Unknown')).appendTo($body);
     $('<h2>').append($('<a>').attr({href:b.url,target:'_blank',rel:'noopener noreferrer'}).text(b.name)).appendTo($body);
     $('<p>').addClass('price').text(b.priceAud===null?'Price on enquiry':money.format(b.priceAud)).appendTo($body);
     $('<p>').addClass('price-note').text(b.priceNote||'See listing for price details').appendTo($body);
@@ -183,8 +188,8 @@ $(async function(){
   $(document).on('keydown',event=>{if(event.key==='Escape')$('.multi-select').prop('open',false);});
   window.addEventListener('pagehide',()=>{if(preferencesReady&&selectionDirty&&!$('#min-price,#max-price,#min-km,#max-km').toArray().some(el=>!el.validity.valid)){clearTimeout(saveTimer);try{localStorage.setItem(preferencesKey,JSON.stringify(capturePreferences()));}catch{}}});
   $('#search,#min-price,#max-price,#min-km,#max-km').on('input',()=>{visibleLimit=48;render();rememberSelections();});
-  $('#brand,#condition,#display-source,#sort').on('change',function(){if(this.multiple)updateMulti(this.id);visibleLimit=48;render();rememberSelections();});
-  $('#clear').on('click',()=>{$('#search,#min-price,#max-price,#min-km,#max-km').val('');$('#brand,#condition,#display-source').val([]);$('#sort').val('name');['brand','condition','display-source'].forEach(updateMulti);visibleLimit=48;render();rememberSelections();});
+  $('#brand,#type,#condition,#display-source,#sort').on('change',function(){if(this.multiple)updateMulti(this.id);visibleLimit=48;render();rememberSelections();});
+  $('#clear').on('click',()=>{$('#search,#min-price,#max-price,#min-km,#max-km').val('');$('#brand,#type,#condition,#display-source').val([]);$('#sort').val('name');['brand','type','condition','display-source'].forEach(updateMulti);visibleLimit=48;render();rememberSelections();});
   $('#more').on('click',()=>{visibleLimit+=48;render();});$('#refresh').on('click',refresh);
   $('#download').on('click',()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(window.bikeSearchResult,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='bikes-filtered.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
   try{preferences=readPreferences();await loadState(true);preferencesReady=true;$('#selection-status').text('Selections loaded.');if(!preferences)rememberSelections();setBusy(false);$('#status').text('Loaded '+bikes.length+' bikes from '+snapshots.length+' saved sources. '+inventoryNotice+' Choose sources and click Fetch selected sources for fresh listings.');}
